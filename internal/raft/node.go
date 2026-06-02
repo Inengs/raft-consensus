@@ -8,7 +8,7 @@ import (
 type NodeState int
 
 const (
-	follower NodeState = iota
+	Follower NodeState = iota
 	Candidate
 	Leader
 )
@@ -63,7 +63,9 @@ type ApplyMsg struct {
 	Index int
 }
 
-type Persister struct {
-	currentTerm int
-	log []LogEntry
+// required so that we can persist currentTerm, votedFor and log
+type Persister interface {
+	saveState(data []byte) error
+	ReadState() []byte
 }
+
